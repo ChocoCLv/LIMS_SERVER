@@ -48,7 +48,7 @@ QString DataBaseModule::query(QString key_known, QString key_unknown)
 {
     QSqlQuery q(db);
     //QString query_content = "SELECT "+key_unknown+""
-    q.exec(QString("SELECT user_password FROM basic_user_information WHERE username='%1'").arg(key_known));
+    q.exec("SELECT user_password FROM basic_user_information WHERE user_id='2013010918015'");
     q.next();
     return q.value(0).toString();
 }

@@ -8,8 +8,6 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
 
     requestParseModule = new RequestParseModule();
-    QByteArray b;
-    requestParseModule->parseRequest(b);
 }
 
 MainWindow::~MainWindow()

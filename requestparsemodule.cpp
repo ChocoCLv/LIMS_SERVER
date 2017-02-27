@@ -15,15 +15,15 @@ void RequestParseModule::parseRequest(QByteArray req)
 
     QJsonObject jo = jd.object();
     qDebug()<<jo<<endl;
-
-    switch(jo.find("RequestType").value().toInt())
+    jo.find("RequestType").value().toInt();
+    switch(0)
     {
     case LOGIN:
     {
         //QString username = jo.find("Username").value().toString();
         //QString password = jo.find("Password").value().toString();
-        QString username = jo.find("Username").value().toString();
-        QString password = jo.find("Password").value().toString();
+        QString username = "2013010918015";
+        QString password = "8682502101";
         tryToLogin(username,password);
         break;
     }
