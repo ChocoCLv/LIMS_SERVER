@@ -20,13 +20,15 @@ SOURCES += main.cpp\
     commmodule.cpp \
     databasemodule.cpp \
     requestparsemodule.cpp \
-    requestbuffpool.cpp
+    requestbuffpool.cpp \
+    logmodule.cpp
 
 HEADERS  += mainwindow.h \
     commmodule.h \
     databasemodule.h \
     requestparsemodule.h \
     global.h \
-    requestbuffpool.h
+    requestbuffpool.h \
+    logmodule.h
 
 FORMS    += mainwindow.ui
