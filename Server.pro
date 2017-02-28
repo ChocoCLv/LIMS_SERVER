@@ -21,7 +21,8 @@ SOURCES += main.cpp\
     databasemodule.cpp \
     requestparsemodule.cpp \
     requestbuffpool.cpp \
-    logmodule.cpp
+    logmodule.cpp \
+    clientrequest.cpp
 
 HEADERS  += mainwindow.h \
     commmodule.h \
@@ -29,6 +30,7 @@ HEADERS  += mainwindow.h \
     requestparsemodule.h \
     global.h \
     requestbuffpool.h \
-    logmodule.h
+    logmodule.h \
+    clientrequest.h
 
 FORMS    += mainwindow.ui

@@ -32,7 +32,7 @@ private:
     void initSocket();
 
 signals:
-    void getNewRequest(QByteArray req);
+    void getNewRequest(QString clientIP,QByteArray req);
 
 public slots:
     void readClient();

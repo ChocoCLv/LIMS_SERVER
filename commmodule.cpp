@@ -35,6 +35,7 @@ void CommModule::readClient()
     while(commSocket->hasPendingDatagrams()){
         datagram.resize(commSocket->pendingDatagramSize());
         commSocket->readDatagram(datagram.data(),datagram.size());
-        emit getNewRequest(datagram);
+        QString cIp = commSocket->peerAddress().toString();
+        emit getNewRequest(cIp,datagram);
     }
 }
