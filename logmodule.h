@@ -8,9 +8,14 @@ class LogModule : public QObject
     Q_OBJECT
 public:
     explicit LogModule(QObject *parent = 0);
+    static LogModule * getInstance();
+    ~LogModule();
+
+private:
+    static LogModule * logModule;
 
 signals:
-    //void log
+    void log(QString l);
 
 public slots:
 };

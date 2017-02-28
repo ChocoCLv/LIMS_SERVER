@@ -8,23 +8,22 @@ RequestParseModule::RequestParseModule(QObject *parent) : QObject(parent)
 
 void RequestParseModule::parseRequest(QByteArray req)
 {
+    emit logModule->log("process datagram");
 
-    qDebug()<<"process datagram"<<endl;
     QJsonParseError jpe;
     QJsonDocument jd = QJsonDocument::fromJson(req,&jpe);
 
     QJsonObject jo = jd.object();
-    qDebug()<<jo<<endl;
-    jo.find("RequestType").value().toInt();
-    switch(0)
+    emit logModule->log(jo);
+
+    int rt = jo.find("RequestType").value().toInt();
+    switch(rt)
     {
     case LOGIN:
     {
-        //QString username = jo.find("Username").value().toString();
-        //QString password = jo.find("Password").value().toString();
-        QString username = "2013010918015";
-        QString password = "8682502101";
-        tryToLogin(username,password);
+        QString username = jo.find("Username").value().toString();
+        QString password = jo.find("Password").value().toString();
+
         break;
     }
 
@@ -33,11 +32,4 @@ void RequestParseModule::parseRequest(QByteArray req)
     }
 }
 
-bool RequestParseModule::tryToLogin(QString un, QString pwd)
-{
-    QString correct_pwd = databaseModule->query(un,"password");
-    if(pwd == correct_pwd){
-        return true;
-    }
-    return false;
-}
+

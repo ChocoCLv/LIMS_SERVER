@@ -6,6 +6,7 @@
 #include "databasemodule.h"
 #include "commmodule.h"
 #include "global.h"
+#include "logmodule.h"
 
 /***
  * 解析客户端的请求
@@ -21,6 +22,7 @@ public:
 private:
     DataBaseModule *databaseModule = DataBaseModule::getInstance();
     CommModule *commModule = CommModule::getInstance();
+    LogModule *logModule = LogModule::getInstance();
 
     bool tryToLogin(QString un,QString pwd);
 
