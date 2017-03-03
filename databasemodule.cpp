@@ -37,8 +37,7 @@ bool DataBaseModule::connectToDb()
     db.setPort(3306);
 
     if(!db.open()){
-        emit LogModule.log(db.lastError());
-        emit LogModule.log("can't open database");
+        emit log->log("can't open database");
         return false;
     }
     return true;

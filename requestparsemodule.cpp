@@ -17,7 +17,7 @@ void RequestParseModule::run()
 
 void RequestParseModule::parseRequest(QJsonObject req)
 {
-    RequestType rt = req.find("RequestType");
+    int rt = req.find("RequestType").value().toInt();
     switch(rt)
     {
     case LOGIN:

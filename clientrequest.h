@@ -32,7 +32,7 @@ public:
 
 private:
     QString clientIp;
-    RequestType rt;
+    //RequestType rt;
     QJsonObject requestContent_js;
     LogModule *log = LogModule::getInstance();
 

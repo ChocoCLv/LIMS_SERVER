@@ -10,10 +10,10 @@ bool ClientRequest::setRequest(QString cIp,QByteArray req)
     QJsonParseError jpe;
     QJsonDocument jd = QJsonDocument::fromJson(req,&jpe);
 
-    if(jpe == QJsonParseError::NoError)
+    if(jpe.error == QJsonParseError::NoError)
     {
         QJsonObject jo = jd.object();
-        rt = jo.find("RequestType").value().toInt();
+        //rt = jo.find("RequestType").value().toInt();
         requestContent_js = jo;
         clientIp = cIp;
         return true;
