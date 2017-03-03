@@ -5,15 +5,25 @@ ClientRequest::ClientRequest(QObject *parent) : QObject(parent)
 
 }
 
-void ClientRequest::setRequest(QString cIp,QByteArray req)
+bool ClientRequest::setRequest(QString cIp,QByteArray req)
 {
     QJsonParseError jpe;
     QJsonDocument jd = QJsonDocument::fromJson(req,&jpe);
 
-    QJsonObject jo = jd.object();
+    if(jpe == QJsonParseError::NoError)
+    {
+        QJsonObject jo = jd.object();
+        rt = jo.find("RequestType").value().toInt();
+        requestContent_js = jo;
+        clientIp = cIp;
+        return true;
+    }
+    emit log->log(jpe.errorString());
+    return false;
 
-    rt = jo.find("RequestType").value().toInt();
+}
 
-    requestContent_js = jo;
-    clientIp = cIp;
+QJsonObject ClientRequest::getReqContent()
+{
+    return requestContent_js;
 }

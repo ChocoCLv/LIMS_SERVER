@@ -5,6 +5,7 @@
 #include <QJsonObject>
 #include <QJsonParseError>
 #include <QJsonDocument>
+#include "logmodule.h"
 
 #include "global.h"
 
@@ -26,13 +27,14 @@ class ClientRequest : public QObject
     Q_OBJECT
 public:
     explicit ClientRequest(QObject *parent = 0);
-    void setRequest(QString cIp,QByteArray req);
-
+    bool setRequest(QString cIp,QByteArray req);
+    QJsonObject getReqContent();
 
 private:
     QString clientIp;
     RequestType rt;
     QJsonObject requestContent_js;
+    LogModule *log = LogModule::getInstance();
 
 signals:
 

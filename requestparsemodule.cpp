@@ -1,27 +1,33 @@
 #include "requestparsemodule.h"
 
-RequestParseModule::RequestParseModule(QObject *parent) : QObject(parent)
+RequestParseModule::RequestParseModule(QObject *parent) : QThread(parent)
 {
+    requestBuffPool = new RequestBuffPool();
+}
 
+void RequestParseModule::run()
+{
+    while(requestBuffPool->hasClientRequest())
+    {
+        ClientRequest *cr = requestBuffPool->getClientRequest();
+        parseRequest(cr->getReqContent());
+    }
 }
 
 
-void RequestParseModule::parseRequest(QByteArray req)
+void RequestParseModule::parseRequest(QJsonObject req)
 {
-
+    RequestType rt = req.find("RequestType");
     switch(rt)
     {
     case LOGIN:
     {
-        QString username = jo.find("Username").value().toString();
-        QString password = jo.find("Password").value().toString();
-
+        break;
+    }
+     default:
         break;
     }
 
-    default:
-        break;
-    }
 }
 
 

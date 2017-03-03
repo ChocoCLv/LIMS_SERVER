@@ -25,6 +25,9 @@ class RequestBuffPool : public QObject
     Q_OBJECT
 public:
     explicit RequestBuffPool(QObject *parent = 0);
+    bool hasClientRequest();
+    ClientRequest * getClientRequest();
+    ~RequestBuffPool();
 
 private:
     QQueue<ClientRequest*> clientRequestQueue;

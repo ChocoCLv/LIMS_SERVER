@@ -7,9 +7,10 @@
 #include <QSqlQuery>
 #include <QDebug>
 
+#include "logmodule.h"
 
 /***
- * 进行数据库操作
+ * 封装数据库操作语句
  ***/
 
 class DataBaseModule : public QObject
@@ -24,6 +25,7 @@ public:
 private:
     explicit DataBaseModule(QObject *parent = 0);
     static DataBaseModule * databaseModulle;
+    LogModule *log = LogModule::getInstance();
 
     QSqlDatabase db;
 

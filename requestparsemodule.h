@@ -2,18 +2,20 @@
 #define REQUESTPARSEMODULE_H
 
 #include <QObject>
+#include <QThread>
 
 #include "databasemodule.h"
 #include "global.h"
 #include "logmodule.h"
 #include "clientrequest.h"
+#include "requestbuffpool.h"
 
 /***
  * 解析客户端的请求
  ***/
 
 
-class RequestParseModule : public QObject
+class RequestParseModule : public QThread
 {
     Q_OBJECT
 public:
@@ -23,13 +25,19 @@ private:
     DataBaseModule *databaseModule = DataBaseModule::getInstance();
     LogModule *logModule = LogModule::getInstance();
 
+    RequestBuffPool *requestBuffPool;
+
     bool tryToLogin(QString un,QString pwd);
+    void parseRequest(QJsonObject req);
+
+protected:
+    void run();
 
 signals:
 
 public slots:
 
-   void parseRequest(QByteArray req);
+
 };
 
 #endif // REQUESTPARSEMODULE_H
