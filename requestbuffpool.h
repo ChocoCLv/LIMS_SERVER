@@ -14,6 +14,12 @@
  * 上层的RequestParseModule从此取出请求并解析
  * **/
 
+
+/***
+ *
+ *
+ * **/
+
 class RequestBuffPool : public QObject
 {
     Q_OBJECT
