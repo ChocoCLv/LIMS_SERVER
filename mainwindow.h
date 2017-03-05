@@ -19,7 +19,7 @@ public:
 private:
     Ui::MainWindow *ui;
     RequestParseModule *requestParseModule;
-    LogModule *logModule;
+    LogModule *logModule = LogModule::getInstance();
 
 public slots:
     void log(QString l);

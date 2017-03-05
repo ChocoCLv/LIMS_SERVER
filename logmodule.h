@@ -7,11 +7,11 @@ class LogModule : public QObject
 {
     Q_OBJECT
 public:
-    explicit LogModule(QObject *parent = 0);
     static LogModule * getInstance();
     ~LogModule();
 
 private:
+    explicit LogModule(QObject *parent = 0);
     static LogModule * logModule;
 
 signals:

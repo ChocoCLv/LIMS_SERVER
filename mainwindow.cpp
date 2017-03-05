@@ -7,16 +7,15 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    requestParseModule = new RequestParseModule();
-    logModule = LogModule::getInstance();
+     connect(logModule,SIGNAL(log(QString)),this,SLOT(log(QString)));
 
-    connect(logModule,SIGNAL(log(QString)),this,SLOT(log(QString)));
+    requestParseModule = new RequestParseModule();
+    requestParseModule->start();
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
-    delete requestParseModule;
 }
 
 void MainWindow::log(QString l)

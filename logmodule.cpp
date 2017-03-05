@@ -4,7 +4,7 @@ LogModule * LogModule::logModule = NULL;
 
 LogModule::LogModule(QObject *parent) : QObject(parent)
 {
-
+    emit log("log module create");
 }
 
 LogModule * LogModule::getInstance()

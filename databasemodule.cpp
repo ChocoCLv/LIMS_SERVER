@@ -9,6 +9,7 @@ DataBaseModule::~DataBaseModule()
 
 DataBaseModule::DataBaseModule(QObject *parent) : QObject(parent)
 {
+    emit logModule->log("database module create");
     initDb();
 }
 
@@ -22,6 +23,7 @@ DataBaseModule* DataBaseModule::getInstance()
 
 void DataBaseModule::initDb()
 {
+    emit logModule->log("initial database");
     if(!connectToDb()){
        return;
     }
@@ -30,24 +32,18 @@ void DataBaseModule::initDb()
 bool DataBaseModule::connectToDb()
 {
     db = QSqlDatabase::addDatabase("QMYSQL");
-    db.setDatabaseName("lims");
-    db.setHostName("localhost");
-    db.setUserName("root");
-    db.setPassword("8682502101");
-    db.setPort(3306);
+    db.setDatabaseName(DB_NAME);
+    db.setHostName(DB_SERVER_ADDR);
+    db.setUserName(DB_USERNAME);
+    db.setPassword(DB_PASSWORD);
+    db.setPort(DB_SERVER_PORT);
 
     if(!db.open()){
-        emit log->log("can't open database");
+        emit logModule->log("can't open database");
+        qDebug()<<db.lastError()<<endl;
         return false;
     }
+    emit logModule->log("database open successfully");
     return true;
 }
 
-QString DataBaseModule::query(QString key_known, QString key_unknown)
-{
-    QSqlQuery q(db);
-    //QString query_content = "SELECT "+key_unknown+""
-    q.exec("SELECT user_password FROM basic_user_information WHERE user_id='2013010918015'");
-    q.next();
-    return q.value(0).toString();
-}

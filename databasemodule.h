@@ -8,6 +8,7 @@
 #include <QDebug>
 
 #include "logmodule.h"
+#include "global.h"
 
 /***
  * 封装数据库操作语句
@@ -20,12 +21,10 @@ public:
     static DataBaseModule * getInstance();
     ~DataBaseModule();
 
-    QString query(QString key_known,QString key_unknown);
-
 private:
     explicit DataBaseModule(QObject *parent = 0);
     static DataBaseModule * databaseModulle;
-    LogModule *log = LogModule::getInstance();
+    LogModule *logModule = LogModule::getInstance();
 
     QSqlDatabase db;
 
