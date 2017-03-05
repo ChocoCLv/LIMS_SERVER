@@ -33,6 +33,7 @@ void CommModule::readClient()
 {
     QByteArray datagram;
     while(commSocket->hasPendingDatagrams()){
+        emit logModule->log("comm module read client");
         datagram.resize(commSocket->pendingDatagramSize());
         commSocket->readDatagram(datagram.data(),datagram.size());
         QString cIp = commSocket->peerAddress().toString();

@@ -9,6 +9,7 @@ void RequestParseModule::run()
 {
     while(requestBuffPool->hasClientRequest())
     {
+        emit logModule->log("requeest parse module:parse request");
         ClientRequest *cr = requestBuffPool->getClientRequest();
         parseRequest(cr->getReqContent());
     }

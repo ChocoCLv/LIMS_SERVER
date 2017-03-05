@@ -1,19 +1,20 @@
 #include "requestbuffpool.h"
 
-RequestBuffPool::RequestBuffPool(QObject *parent) : QObject(parent)
+RequestBuffPool::RequestBuffPool(QObject *parent) : QThread(parent)
 {
-    connect(commModule,SIGNAL(getNewRequest(QString,QByteArray)),this,SLOT(newRequest(QString,QByteArray)));
+    connect(commModule,SIGNAL(getNewRequest(QString,QByteArray)),
+            this,SLOT(newRequest(QString,QByteArray)));
 }
 
 void RequestBuffPool::newRequest(QString cIp, QByteArray req)
 {
     ClientRequest *cr = new ClientRequest();
     if(cr->setRequest(cIp,req)){
+        emit logModule->log("request buff pool:request enqueue");
         clientRequestQueue.enqueue(cr);
     }else{
         delete cr;
     }
-
 }
 
 bool RequestBuffPool::hasClientRequest()
@@ -27,6 +28,11 @@ bool RequestBuffPool::hasClientRequest()
 ClientRequest* RequestBuffPool::getClientRequest()
 {
     return clientRequestQueue.dequeue();
+}
+
+void RequestBuffPool::run()
+{
+
 }
 
 RequestBuffPool::~RequestBuffPool()
