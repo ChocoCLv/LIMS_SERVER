@@ -10,6 +10,7 @@ DataBaseModule::~DataBaseModule()
 DataBaseModule::DataBaseModule(QObject *parent) : QObject(parent)
 {
     emit logModule->log("database module create");
+    qDebug()<<"DataBaseModule thread id:"<<QThread::currentThreadId();
     initDb();
 }
 

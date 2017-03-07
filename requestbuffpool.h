@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QQueue>
 #include <QThread>
+#include <QDebug>
 
 #include "clientrequest.h"
 #include "commmodule.h"

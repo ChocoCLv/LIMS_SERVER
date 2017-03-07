@@ -5,6 +5,8 @@
 #include <QJsonObject>
 #include <QJsonParseError>
 #include <QJsonDocument>
+#include <QThread>
+#include <QDebug>
 #include "logmodule.h"
 
 #include "global.h"
@@ -34,7 +36,7 @@ private:
     QString clientIp;
     //RequestType rt;
     QJsonObject requestContent_js;
-    LogModule *log = LogModule::getInstance();
+    LogModule *logModule = LogModule::getInstance();
 
 signals:
 

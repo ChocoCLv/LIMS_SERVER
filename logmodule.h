@@ -2,6 +2,8 @@
 #define LOGMODULE_H
 
 #include <QObject>
+#include <QThread>
+#include <QDebug>
 
 class LogModule : public QObject
 {

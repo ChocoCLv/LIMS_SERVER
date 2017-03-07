@@ -4,6 +4,8 @@ RequestBuffPool::RequestBuffPool(QObject *parent) : QThread(parent)
 {
     connect(commModule,SIGNAL(getNewRequest(QString,QByteArray)),
             this,SLOT(newRequest(QString,QByteArray)));
+
+   qDebug()<<"RequestBuffPool thread id:"<<QThread::currentThreadId();
 }
 
 void RequestBuffPool::newRequest(QString cIp, QByteArray req)

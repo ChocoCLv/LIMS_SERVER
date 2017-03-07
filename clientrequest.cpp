@@ -2,7 +2,7 @@
 
 ClientRequest::ClientRequest(QObject *parent) : QObject(parent)
 {
-
+    qDebug()<<"ClientRequest thread id:"<<QThread::currentThreadId();
 }
 
 bool ClientRequest::setRequest(QString cIp,QByteArray req)
@@ -18,7 +18,7 @@ bool ClientRequest::setRequest(QString cIp,QByteArray req)
         clientIp = cIp;
         return true;
     }
-    emit log->log(jpe.errorString());
+    emit logModule->log(jpe.errorString());
     return false;
 
 }

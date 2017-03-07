@@ -3,10 +3,12 @@
 RequestParseModule::RequestParseModule(QObject *parent) : QThread(parent)
 {
     requestBuffPool = new RequestBuffPool();
+    qDebug()<<"RequestParseModule thread id:"<<QThread::currentThreadId();
 }
 
 void RequestParseModule::run()
 {
+    emit logModule->log("thread run");
     while(requestBuffPool->hasClientRequest())
     {
         emit logModule->log("requeest parse module:parse request");

@@ -6,6 +6,7 @@
 #include <QSqlError>
 #include <QSqlQuery>
 #include <QDebug>
+#include <QThread>
 
 #include "logmodule.h"
 #include "global.h"

@@ -7,10 +7,12 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
-     connect(logModule,SIGNAL(log(QString)),this,SLOT(log(QString)));
+    connect(logModule,SIGNAL(log(QString)),this,SLOT(log(QString)));
 
     requestParseModule = new RequestParseModule();
     requestParseModule->start();
+
+   qDebug()<<"mainwindow thread id:"<<QThread::currentThreadId();
 }
 
 MainWindow::~MainWindow()

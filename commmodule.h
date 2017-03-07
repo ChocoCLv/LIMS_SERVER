@@ -6,8 +6,10 @@
 #include <QHostAddress>
 #include <QJsonDocument>
 #include <QtDebug>
+#include <QDebug>
 #include <QJsonArray>
 #include <QJsonObject>
+#include <QThread>
 
 #include "global.h"
 #include "logmodule.h"

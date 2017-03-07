@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QThread>
+#include <QDebug>
 
 #include "databasemodule.h"
 #include "global.h"
