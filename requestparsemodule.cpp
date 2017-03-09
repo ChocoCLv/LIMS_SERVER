@@ -21,17 +21,10 @@ void RequestParseModule::run()
 
 void RequestParseModule::parseRequest(QJsonObject req)
 {
-    int rt = req.find("RequestType").value().toInt();
-    switch(rt)
-    {
-    case LOGIN:
-    {
-        break;
-    }
-    default:
-        break;
-    }
-
+    QString username = req.find("username").value().toString();
+    QString password = req.find("password").value().toString();
+    qDebug()<<"username:"<<username;
+    qDebug()<<"password:"<<password;
 }
 
 

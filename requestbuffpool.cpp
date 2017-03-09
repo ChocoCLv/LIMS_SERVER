@@ -28,7 +28,7 @@ void RequestBuffPool::run()
 {
     commModule = new CommModule();
     connect(commModule,SIGNAL(getNewRequest(QString,QByteArray)),
-           this,SLOT(newRequest(QString,QByteArray)));
+           this,SLOT(newRequest(QString,QByteArray)),Qt::DirectConnection);
 
     this->exec();
 }
