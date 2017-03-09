@@ -34,12 +34,9 @@ public:
 
 private:
     QQueue<ClientRequest*> clientRequestQueue;
-    CommModule *commModule = CommModule::getInstance();
+    CommModule *commModule;
     LogModule *logModule = LogModule::getInstance();
     QSemaphore requestNum;
-
-
-
 
 protected:
     void run();

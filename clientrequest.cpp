@@ -2,7 +2,7 @@
 
 ClientRequest::ClientRequest(QObject *parent) : QObject(parent)
 {
-    qDebug()<<"ClientRequest thread id:"<<QThread::currentThreadId();
+
 }
 
 bool ClientRequest::setRequest(QString cIp,QByteArray req)
@@ -13,7 +13,6 @@ bool ClientRequest::setRequest(QString cIp,QByteArray req)
     if(jpe.error == QJsonParseError::NoError)
     {
         QJsonObject jo = jd.object();
-        //rt = jo.find("RequestType").value().toInt();
         requestContent_js = jo;
         clientIp = cIp;
         return true;

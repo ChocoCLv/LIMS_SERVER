@@ -9,7 +9,6 @@
 #include <QDebug>
 #include <QJsonArray>
 #include <QJsonObject>
-#include <QThread>
 
 #include "global.h"
 #include "logmodule.h"
@@ -25,13 +24,11 @@ class CommModule : public QObject
 {
     Q_OBJECT
 public:
-    static CommModule * getInstance();
+    explicit CommModule(QObject *parent = 0);
     ~CommModule();
 
 private:
-    explicit CommModule(QObject *parent = 0);
     QUdpSocket *commSocket;
-    static CommModule *commModule;
     LogModule *logModule = LogModule::getInstance();
     void initSocket();
 

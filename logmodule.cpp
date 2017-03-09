@@ -4,8 +4,7 @@ LogModule * LogModule::logModule = NULL;
 
 LogModule::LogModule(QObject *parent) : QObject(parent)
 {
-    emit log("log module create");
-    qDebug()<<"LogModule thread id:"<<QThread::currentThreadId();
+
 }
 
 LogModule * LogModule::getInstance()

@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -11,8 +12,6 @@ MainWindow::MainWindow(QWidget *parent) :
 
     requestParseModule = new RequestParseModule();
     requestParseModule->start();
-
-   qDebug()<<"mainwindow thread id:"<<QThread::currentThreadId();
 }
 
 MainWindow::~MainWindow()

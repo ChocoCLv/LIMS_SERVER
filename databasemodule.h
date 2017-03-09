@@ -6,7 +6,6 @@
 #include <QSqlError>
 #include <QSqlQuery>
 #include <QDebug>
-#include <QThread>
 
 #include "logmodule.h"
 #include "global.h"
@@ -19,14 +18,11 @@ class DataBaseModule : public QObject
 {
     Q_OBJECT
 public:
-    static DataBaseModule * getInstance();
+    explicit DataBaseModule(QObject *parent = 0);
     ~DataBaseModule();
 
 private:
-    explicit DataBaseModule(QObject *parent = 0);
-    static DataBaseModule * databaseModulle;
     LogModule *logModule = LogModule::getInstance();
-
     QSqlDatabase db;
 
     void initDb();

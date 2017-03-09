@@ -1,30 +1,18 @@
 #include "databasemodule.h"
 
-DataBaseModule* DataBaseModule::databaseModulle = NULL;
-
 DataBaseModule::~DataBaseModule()
 {
-    delete databaseModulle;
+
 }
 
 DataBaseModule::DataBaseModule(QObject *parent) : QObject(parent)
 {
-    emit logModule->log("database module create");
-    qDebug()<<"DataBaseModule thread id:"<<QThread::currentThreadId();
     initDb();
 }
 
-DataBaseModule* DataBaseModule::getInstance()
-{
-    if(databaseModulle == NULL){
-        databaseModulle = new DataBaseModule();
-    }
-    return databaseModulle;
-}
 
 void DataBaseModule::initDb()
 {
-    emit logModule->log("initial database");
     if(!connectToDb()){
        return;
     }

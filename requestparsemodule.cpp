@@ -2,20 +2,18 @@
 
 RequestParseModule::RequestParseModule(QObject *parent) : QThread(parent)
 {
-    //moveToThread(this);
     requestBuffPool = new RequestBuffPool();
-
-    qDebug()<<"RequestParseModule thread id:"<<QThread::currentThreadId();
+    requestBuffPool->start();
 }
 
 void RequestParseModule::run()
 {
-    //requestBuffPool = new RequestBuffPool();
-    emit logModule->log("thread run");
-    qDebug()<<"RequestParseModule run thread id:"<<QThread::currentThreadId();
+
+    databaseModule = new DataBaseModule();
+
     forever{
         ClientRequest *cr = requestBuffPool->getClientRequest();
-        emit logModule->log("requeest parse module:parse request");
+        emit logModule->log("request parse module:parse request");
         parseRequest(cr->getReqContent());
     }
 }
@@ -30,7 +28,7 @@ void RequestParseModule::parseRequest(QJsonObject req)
     {
         break;
     }
-     default:
+    default:
         break;
     }
 

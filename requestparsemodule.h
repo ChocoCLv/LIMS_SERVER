@@ -23,7 +23,7 @@ public:
     explicit RequestParseModule(QObject *parent = 0);
 
 private:
-    DataBaseModule *databaseModule = DataBaseModule::getInstance();
+    DataBaseModule *databaseModule;
     LogModule *logModule = LogModule::getInstance();
 
     RequestBuffPool *requestBuffPool;
