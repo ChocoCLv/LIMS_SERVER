@@ -5,6 +5,7 @@
 #include <QQueue>
 #include <QThread>
 #include <QDebug>
+#include <QSemaphore>
 
 #include "clientrequest.h"
 #include "commmodule.h"
@@ -35,6 +36,9 @@ private:
     QQueue<ClientRequest*> clientRequestQueue;
     CommModule *commModule = CommModule::getInstance();
     LogModule *logModule = LogModule::getInstance();
+    QSemaphore requestNum;
+
+
 
 
 protected:

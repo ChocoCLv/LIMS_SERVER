@@ -2,17 +2,20 @@
 
 RequestParseModule::RequestParseModule(QObject *parent) : QThread(parent)
 {
+    //moveToThread(this);
     requestBuffPool = new RequestBuffPool();
+
     qDebug()<<"RequestParseModule thread id:"<<QThread::currentThreadId();
 }
 
 void RequestParseModule::run()
 {
+    //requestBuffPool = new RequestBuffPool();
     emit logModule->log("thread run");
-    while(requestBuffPool->hasClientRequest())
-    {
-        emit logModule->log("requeest parse module:parse request");
+    qDebug()<<"RequestParseModule run thread id:"<<QThread::currentThreadId();
+    forever{
         ClientRequest *cr = requestBuffPool->getClientRequest();
+        emit logModule->log("requeest parse module:parse request");
         parseRequest(cr->getReqContent());
     }
 }

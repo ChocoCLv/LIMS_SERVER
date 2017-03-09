@@ -7,6 +7,7 @@ CommModule *CommModule::getInstance()
     if(commModule == NULL){
         commModule = new CommModule();
     }
+
     return commModule;
 }
 
@@ -19,6 +20,7 @@ CommModule::~CommModule()
 CommModule::CommModule(QObject *parent) : QObject(parent)
 {
     initSocket();
+
     qDebug()<<"CommModule thread id:"<<QThread::currentThreadId();
 }
 
