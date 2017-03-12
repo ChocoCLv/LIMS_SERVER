@@ -10,6 +10,11 @@
 >4. DataseModule：数据库模块。实现了数据库操作的一些接口。单例模式，只提供一个实体。
 >5. LogModule：日志模块，单例模式，实现不同模块打印日志到主窗口
 
+## 2017-03-10 1
+### TODO
+1. 将请求解析的处理结果返回给客户端
+2. 
+
 
 ## 2017-3-9 
 ### 多线程分析：
@@ -18,7 +23,7 @@
 3. 子线程RequestBuffPool：与CommModule、ClientRequest位于同一线程。
 
 在MainWindow的构造函数中直接实例化RequestParseModule对象，此时只有在RequesParseModule线程的run()函数部分才属于子线程，其他部分仍由主线程管理。所以要在run()函数中将单例的DatabaseModule对象移到子线程中（databaseModule.moveToThread(this)。而RequestBuffPool线程则可以直接在构造函数中新建。
-同样的，需要在RequestBuffPool的run()中将CommModule移到本线程中。、
+同样的，需要在RequestBuffPool的run()中将CommModule移到本线程中。
 
 ### TODO
 1. **DatabaseModule和CommModule模块不使用单例模式实现**

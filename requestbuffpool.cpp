@@ -5,11 +5,12 @@ RequestBuffPool::RequestBuffPool(QObject *parent) : QThread(parent)
 
 }
 
-void RequestBuffPool::newRequest(QString cIp, QByteArray req)
+void RequestBuffPool::newRequest(QHostAddress cAddr, QByteArray req)
 {
+    qDebug()<<"newRequest thread id:"<<QThread::currentThreadId();
     ClientRequest *cr = new ClientRequest();
-    if(cr->setRequest(cIp,req)){
-        emit logModule->log("request buff pool:request enqueue");
+    if(cr->setRequest(cAddr,req)){
+        emit logModule->log("request buff pool:request enqueue ");
         clientRequestQueue.enqueue(cr);
         requestNum.release(1);
     }else{
@@ -26,9 +27,11 @@ ClientRequest* RequestBuffPool::getClientRequest()
 
 void RequestBuffPool::run()
 {
-    commModule = new CommModule();
-    connect(commModule,SIGNAL(getNewRequest(QString,QByteArray)),
-           this,SLOT(newRequest(QString,QByteArray)),Qt::DirectConnection);
+    qDebug()<<"request buff pool run thread id:"<<QThread::currentThreadId();
+    commModule = CommModule::getInstance();//第一次获取CommModule的实例，确保通信模块在子线程中运行
+
+    connect(commModule,SIGNAL(getNewRequest(QHostAddress,QByteArray)),
+           this,SLOT(newRequest(QHostAddress,QByteArray)),Qt::DirectConnection);
 
     this->exec();
 }

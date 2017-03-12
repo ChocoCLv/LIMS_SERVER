@@ -6,6 +6,7 @@
 #include <QThread>
 #include <QDebug>
 #include <QSemaphore>
+#include <QHostAddress>
 
 #include "clientrequest.h"
 #include "commmodule.h"
@@ -44,7 +45,7 @@ protected:
 signals:
 
 public slots:
-    void newRequest(QString cIp,QByteArray req);
+    void newRequest(QHostAddress cAddr,QByteArray req);
 };
 
 #endif // REQUESTBUFFPOOL_H

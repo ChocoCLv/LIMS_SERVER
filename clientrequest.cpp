@@ -5,7 +5,7 @@ ClientRequest::ClientRequest(QObject *parent) : QObject(parent)
 
 }
 
-bool ClientRequest::setRequest(QString cIp,QByteArray req)
+bool ClientRequest::setRequest(QHostAddress cAddr,QByteArray req)
 {
     QJsonParseError jpe;
     QJsonDocument jd = QJsonDocument::fromJson(req,&jpe);
@@ -14,7 +14,7 @@ bool ClientRequest::setRequest(QString cIp,QByteArray req)
     {
         QJsonObject jo = jd.object();
         requestContent_js = jo;
-        clientIp = cIp;
+        clientAddr = cAddr;
         return true;
     }
     emit logModule->log(jpe.errorString());
@@ -22,7 +22,17 @@ bool ClientRequest::setRequest(QString cIp,QByteArray req)
 
 }
 
+void ClientRequest::sendResponse(QJsonObject resp)
+{
+    commModule->sendData(clientAddr,resp);
+}
+
 QJsonObject ClientRequest::getReqContent()
 {
     return requestContent_js;
+}
+
+ClientRequest::~ClientRequest()
+{
+
 }

@@ -17,7 +17,21 @@ void DataBaseModule::initDb()
        return;
     }
 }
-    
+
+void DataBaseModule::queryLoginInformation(QString user_id,QString &result,QString &user_type)
+{
+    emit logModule->log(__func__);
+    QSqlQuery query(db);
+    QString q_str;
+    q_str = QString("SELECT user_password,user_type FROM basic_user_information WHERE user_id ='%1'")
+            .arg(user_id);
+    query.exec(q_str);
+    query.next();
+
+    result = query.value(0).toString();
+    user_type = query.value(1).toString();
+}
+
 bool DataBaseModule::connectToDb()
 {
     db = QSqlDatabase::addDatabase("QMYSQL");

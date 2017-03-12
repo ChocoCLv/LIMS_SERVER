@@ -12,6 +12,7 @@
 
 /***
  * 封装数据库操作语句
+ * 不涉及数据的逻辑判断操作
  ***/
 
 class DataBaseModule : public QObject
@@ -20,6 +21,9 @@ class DataBaseModule : public QObject
 public:
     explicit DataBaseModule(QObject *parent = 0);
     ~DataBaseModule();
+
+    //查询语句根据数据库中存储相应表项的数据类型将传入参数的值转换为相应类型
+    void queryLoginInformation(QString user_id,QString &result,QString &user_type);
 
 private:
     LogModule *logModule = LogModule::getInstance();

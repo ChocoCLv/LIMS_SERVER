@@ -29,7 +29,9 @@ private:
     RequestBuffPool *requestBuffPool;
 
     bool tryToLogin(QString un,QString pwd);
-    void parseRequest(QJsonObject req);
+    void parseRequest(ClientRequest *cr);
+
+    void processLoginRequest(ClientRequest *cr);
 
 protected:
     void run();

@@ -9,6 +9,8 @@
 #include <QDebug>
 #include <QJsonArray>
 #include <QJsonObject>
+#include <QThread>
+#include <QJsonDocument>
 
 #include "global.h"
 #include "logmodule.h"
@@ -24,16 +26,20 @@ class CommModule : public QObject
 {
     Q_OBJECT
 public:
-    explicit CommModule(QObject *parent = 0);
-    ~CommModule();
 
+    ~CommModule();
+    static CommModule* getInstance();
+    void sendData(QHostAddress cAddr,QJsonObject data);
 private:
+    static CommModule* commModule;
+    explicit CommModule(QObject *parent = 0);
     QUdpSocket *commSocket;
     LogModule *logModule = LogModule::getInstance();
     void initSocket();
 
+
 signals:
-    void getNewRequest(QString clientIP,QByteArray req);
+    void getNewRequest(QHostAddress clientAddr,QByteArray req);
 
 public slots:
     void readClient();
