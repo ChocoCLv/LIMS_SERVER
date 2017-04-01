@@ -50,6 +50,10 @@ void RequestParseModule::processLoginRequest(ClientRequest *cr)
         jo.insert("LOGIN_STATUS",QString("SUCCESS"));
         jo.insert("USERTYPE",user_type);
         cr->sendResponse(jo);
+    }else{
+        QJsonObject jo;
+        jo.insert("LOGIN_STATUS",QString("FAILED"));
+        cr->sendResponse(jo);
     }
 }
 
