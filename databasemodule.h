@@ -25,6 +25,10 @@ public:
     //查询语句根据数据库中存储相应表项的数据类型将传入参数的值转换为相应类型
     void queryLoginInformation(QString user_id,QString &result,QString &user_type);
 
+    QString queryUserNamaByUserId(QString user_id);
+
+    void addDevice(QString name,QString type,QString principal);
+
 private:
     LogModule *logModule = LogModule::getInstance();
     QSqlDatabase db;

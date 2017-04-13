@@ -11,6 +11,7 @@
 #include <QJsonObject>
 #include <QThread>
 #include <QJsonDocument>
+#include <QTextCodec>
 
 #include "global.h"
 #include "logmodule.h"

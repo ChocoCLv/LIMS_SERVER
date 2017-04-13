@@ -8,12 +8,10 @@ RequestParseModule::RequestParseModule(QObject *parent) : QThread(parent)
 
 void RequestParseModule::run()
 {
-
     databaseModule = new DataBaseModule();
     ClientRequest *cr;
 
     forever{
-        qDebug()<<"request parse module run thread id:"<<QThread::currentThreadId();
         cr = requestBuffPool->getClientRequest();
         emit logModule->log("request parse module:parse request");
         parseRequest(cr);
@@ -23,31 +21,29 @@ void RequestParseModule::run()
 
 void RequestParseModule::parseRequest(ClientRequest *cr)
 {
-    //QJsonObject req = cr->getReqContent();
-    //int rt = req.find("requesttype").value().toInt();
-    int rt = 0;
-    switch(rt)
-    {
-    case LOGIN:
+    QJsonObject req = cr->getReqContent();
+    QString rt = req.find("REQUEST_TYPE").value().toString();
+    if(rt == "LOGIN"){
         processLoginRequest(cr);
-        break;
-    default:
-        break;
+    }else if(rt == "ADD_DEVICE"){
+        processAddDeviceRequest(cr);
     }
-
 }
 
 void RequestParseModule::processLoginRequest(ClientRequest *cr)
 {
-    QString username = cr->getReqContent().find("USERNAME").value().toString();
+    QString userId = cr->getReqContent().find("USER_ID").value().toString();
     QString password = cr->getReqContent().find("PASSWORD").value().toString();
     QString result;
     QString user_type;
-    databaseModule->queryLoginInformation(username,result,user_type);
-    emit logModule->log("correct password:"+result+" user type:"+user_type);
+    QString username;
+    databaseModule->queryLoginInformation(userId,result,user_type);
+    emit logModule->log(userId+"correct password:"+result+" user type:"+user_type);
     if(result == password){
+        username = databaseModule->queryUserNamaByUserId(userId);
         QJsonObject jo;
         jo.insert("LOGIN_STATUS",QString("SUCCESS"));
+        jo.insert("USER_NAME",username);
         jo.insert("USERTYPE",user_type);
         cr->sendResponse(jo);
     }else{
@@ -57,4 +53,10 @@ void RequestParseModule::processLoginRequest(ClientRequest *cr)
     }
 }
 
-
+void RequestParseModule::processAddDeviceRequest(ClientRequest *cr)
+{
+    QString devicePrincipal = cr->getReqContent().find("DEVICE_PRINCIPAL").value().toString();
+    QString deviceName = cr->getReqContent().find("DEVICE_NAME").value().toString();
+    QString deviceType = cr->getReqContent().find("DEVICE_TYPE").value().toString();
+    databaseModule->addDevice(deviceName,deviceType,devicePrincipal);
+}

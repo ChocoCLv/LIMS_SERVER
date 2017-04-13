@@ -32,6 +32,7 @@ private:
     void parseRequest(ClientRequest *cr);
 
     void processLoginRequest(ClientRequest *cr);
+    void processAddDeviceRequest(ClientRequest *cr);
 
 protected:
     void run();

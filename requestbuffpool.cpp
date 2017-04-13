@@ -7,7 +7,6 @@ RequestBuffPool::RequestBuffPool(QObject *parent) : QThread(parent)
 
 void RequestBuffPool::newRequest(QHostAddress cAddr, QByteArray req)
 {
-    qDebug()<<"newRequest thread id:"<<QThread::currentThreadId();
     ClientRequest *cr = new ClientRequest();
     if(cr->setRequest(cAddr,req)){
         emit logModule->log("request buff pool:request enqueue ");
@@ -27,7 +26,6 @@ ClientRequest* RequestBuffPool::getClientRequest()
 
 void RequestBuffPool::run()
 {
-    qDebug()<<"request buff pool run thread id:"<<QThread::currentThreadId();
     commModule = CommModule::getInstance();//第一次获取CommModule的实例，确保通信模块在子线程中运行
 
     connect(commModule,SIGNAL(getNewRequest(QHostAddress,QByteArray)),

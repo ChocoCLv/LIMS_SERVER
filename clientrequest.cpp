@@ -7,6 +7,7 @@ ClientRequest::ClientRequest(QObject *parent) : QObject(parent)
 
 bool ClientRequest::setRequest(QHostAddress cAddr,QByteArray req)
 {
+
     QJsonParseError jpe;
     QJsonDocument jd = QJsonDocument::fromJson(req,&jpe);
 

@@ -7,6 +7,7 @@
 #include <QJsonDocument>
 #include <QDebug>
 #include <QHostAddress>
+#include <QTextCodec>
 #include "logmodule.h"
 #include "commmodule.h"
 #include "global.h"

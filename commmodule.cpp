@@ -31,13 +31,18 @@ void CommModule::initSocket()
 
 void CommModule::readClient()
 {
-    qDebug()<<"READ CLIENT thread id:"<<QThread::currentThreadId();
     QByteArray datagram;
+
     while(commSocket->hasPendingDatagrams()){
         QHostAddress *clientAddr = new QHostAddress();
-        emit logModule->log("comm module read client");
+        emit logModule->log("comm module read client:"+
+                            QString::number(commSocket->pendingDatagramSize()));
         datagram.resize(commSocket->pendingDatagramSize());
         commSocket->readDatagram(datagram.data(),datagram.size(),clientAddr);
+        QTextCodec *utf8codec = QTextCodec::codecForName("UTF-8");
+        QString utf8str = utf8codec->toUnicode(datagram);
+        datagram = utf8str.toStdString().data();
+
         emit getNewRequest(*clientAddr,datagram);
     }
 }

@@ -3,8 +3,6 @@
 
 #include <QString>
 
-enum RequestType{LOGIN};
-
 const static int SVR_PORT = 2222;
 
 const static int CLIENT_PORT = 3333;
