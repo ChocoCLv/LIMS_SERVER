@@ -27,7 +27,7 @@ public:
 
     QString queryUserNamaByUserId(QString user_id);
 
-    void addDevice(QString name,QString type,QString principal);
+    bool addDevice(QString name,QString type,QString principal);
 
 private:
     LogModule *logModule = LogModule::getInstance();

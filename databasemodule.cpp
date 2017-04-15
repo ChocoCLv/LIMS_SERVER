@@ -60,7 +60,7 @@ QString DataBaseModule::queryUserNamaByUserId(QString user_id)
     return query.value(0).toString();
 }
 
-void DataBaseModule::addDevice(QString name, QString type, QString principal)
+bool DataBaseModule::addDevice(QString name, QString type, QString principal)
 {
     QSqlQuery query(db);
     QString q_str;
@@ -69,5 +69,15 @@ void DataBaseModule::addDevice(QString name, QString type, QString principal)
     query.exec(q_str);
     if(!query.isActive()){
         qDebug()<<query.lastError();
+        return -1;
     }
+    q_str = QString("SELECT max(device_id) FROM device_information");
+    query.exec(q_str);
+    if(!query.isActive()){
+        qDebug()<<query.lastError();
+        return -1;
+    }else{
+        return query.value(0).toString();
+    }
+    return true;
 }
