@@ -60,24 +60,25 @@ QString DataBaseModule::queryUserNamaByUserId(QString user_id)
     return query.value(0).toString();
 }
 
-bool DataBaseModule::addDevice(QString name, QString type, QString principal)
+QString DataBaseModule::addDevice(QString name, QString type, QString principal)
 {
     QSqlQuery query(db);
     QString q_str;
     q_str = QString("INSERT INTO device_information(device_name,device_principal_id,device_type) VALUES ('%1', '%2', '%3')")
-            .arg(name).arg(principal).arg(type);
+            .arg(name).arg(principal).arg(type).toUtf8();
+
     query.exec(q_str);
     if(!query.isActive()){
         qDebug()<<query.lastError();
-        return -1;
+        qDebug()<<q_str;
+        return NULL;
     }
     q_str = QString("SELECT max(device_id) FROM device_information");
     query.exec(q_str);
     if(!query.isActive()){
         qDebug()<<query.lastError();
-        return -1;
+        return NULL;
     }else{
         return query.value(0).toString();
     }
-    return true;
 }

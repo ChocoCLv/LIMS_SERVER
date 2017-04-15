@@ -55,14 +55,16 @@ void RequestParseModule::processLoginRequest(ClientRequest *cr)
 
 void RequestParseModule::processAddDeviceRequest(ClientRequest *cr)
 {
-    QString devicePrincipal = cr->getReqContent().find("DEVICE_PRINCIPAL").value().toString();
+    QString devicePrincipalId = cr->getReqContent().find("DEVICE_PRINCIPAL_ID").value().toString();
     QString deviceName = cr->getReqContent().find("DEVICE_NAME").value().toString();
     QString deviceType = cr->getReqContent().find("DEVICE_TYPE").value().toString();
-    QString deviceId = databaseModule->addDevice(deviceName,deviceType,devicePrincipal);
-    if(deviceId!=-1){
-        QJsonObject jo;
+    QString deviceId = databaseModule->addDevice(deviceName,deviceType,devicePrincipalId);
+    QJsonObject jo;
+    if(deviceId!=NULL){
         jo.insert("ADD_STATUS","SUCCESS");
         jo.insert("DEVICE_ID",deviceId);
-        cr->sendResponse(jo);
+    }else{
+        jo.insert("ADD_STATUS","FAILED");
     }
+    cr->sendResponse(jo);
 }
