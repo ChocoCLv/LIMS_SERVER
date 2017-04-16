@@ -27,6 +27,8 @@ void RequestParseModule::parseRequest(ClientRequest *cr)
         processLoginRequest(cr);
     }else if(rt == "ADD_DEVICE"){
         processAddDeviceRequest(cr);
+    }else if(rt == "UPDATE_DEVICE_STATUS"){
+        processUpdateDevcieStatusRequest(cr);
     }
 }
 
@@ -74,6 +76,24 @@ void RequestParseModule::processAddDeviceRequest(ClientRequest *cr)
         resp.insert("ADD_STATUS","SUCCESS");
     }else{
         resp.insert("ADD_STATUS","FAILED");
+    }
+    cr->sendResponse(resp);
+}
+
+void RequestParseModule::processUpdateDevcieStatusRequest(ClientRequest *cr)
+{
+    QJsonObject req = cr->getReqContent();
+    QString deviceId = req.find("DEVICE_ID").value().toString();
+    QString deviceStatus = req.find("DEVICE_CURRENT_STATUS").value().toString();
+    QString deviceLoc = req.find("DEVICE_CURRENT_LOCATION").value().toString();
+    QString deviceComments = req.find("DEVICE_COMMENTS").value().toString();
+    bool updateStatus = databaseModule->
+            updateDeviceStatus(deviceId,deviceLoc,deviceStatus,deviceComments);
+    QJsonObject resp;
+    if(updateStatus){
+        resp.insert("UPDATE_STATUS","SUCCESS");
+    }else{
+        resp.insert("UPDATE_STATUS","FAILED");
     }
     cr->sendResponse(resp);
 }

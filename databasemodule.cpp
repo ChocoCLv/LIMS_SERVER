@@ -86,3 +86,19 @@ quint64 DataBaseModule::getMaxDeviceId()
     quint64 maxId = query.value(0).toULongLong();
     return maxId;
 }
+
+bool DataBaseModule::updateDeviceStatus(
+        QString deviceId, QString deviceLoc, QString deviceStatus, QString deviceComments)
+{
+    QSqlQuery query(db);
+    QString q_str;
+    q_str = QString("INSERT INTO device_status_log(device_id,device_loc,device_status,device_comments) VALUES ('%1', '%2', '%3','%4')")
+            .arg(deviceId).arg(deviceLoc).arg(deviceStatus).arg(deviceComments).toUtf8();
+    query.exec(q_str);
+    if(!query.isActive()){
+        qDebug()<<query.lastError();
+        qDebug()<<q_str;
+        return false;
+    }
+    return true;
+}

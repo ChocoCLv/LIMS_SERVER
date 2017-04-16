@@ -31,6 +31,8 @@ public:
 
     quint64 getMaxDeviceId();
 
+    bool updateDeviceStatus(QString deviceId, QString deviceLoc, QString deviceStatus, QString deviceComments);
+
 private:
     LogModule *logModule = LogModule::getInstance();
     QSqlDatabase db;
