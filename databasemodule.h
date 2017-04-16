@@ -27,7 +27,9 @@ public:
 
     QString queryUserNamaByUserId(QString user_id);
 
-    QString addDevice(QString name,QString type,QString principal);
+    bool addDevice(QString deviceId,QString name,QString type,QString principal);
+
+    quint64 getMaxDeviceId();
 
 private:
     LogModule *logModule = LogModule::getInstance();

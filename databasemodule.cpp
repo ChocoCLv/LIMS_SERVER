@@ -60,25 +60,29 @@ QString DataBaseModule::queryUserNamaByUserId(QString user_id)
     return query.value(0).toString();
 }
 
-QString DataBaseModule::addDevice(QString name, QString type, QString principal)
+bool DataBaseModule::addDevice(QString deviceId, QString name, QString type, QString principal)
 {
     QSqlQuery query(db);
     QString q_str;
-    q_str = QString("INSERT INTO device_information(device_name,device_principal_id,device_type) VALUES ('%1', '%2', '%3')")
-            .arg(name).arg(principal).arg(type).toUtf8();
+    q_str = QString("INSERT INTO device_information(device_id,device_name,device_principal_id,device_type) VALUES ('%1', '%2', '%3','%4')")
+            .arg(deviceId).arg(name).arg(principal).arg(type).toUtf8();
 
     query.exec(q_str);
     if(!query.isActive()){
         qDebug()<<query.lastError();
         qDebug()<<q_str;
-        return NULL;
+        return false;
     }
+    return true;
+}
+
+quint64 DataBaseModule::getMaxDeviceId()
+{
+    QSqlQuery query(db);
+    QString q_str;
     q_str = QString("SELECT max(device_id) FROM device_information");
     query.exec(q_str);
-    if(!query.isActive()){
-        qDebug()<<query.lastError();
-        return NULL;
-    }else{
-        return query.value(0).toString();
-    }
+    query.next();
+    quint64 maxId = query.value(0).toULongLong();
+    return maxId;
 }
