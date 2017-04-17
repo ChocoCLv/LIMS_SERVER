@@ -102,3 +102,18 @@ bool DataBaseModule::updateDeviceStatus(
     }
     return true;
 }
+
+bool DataBaseModule::borrowDevice(QString deviceId, QString studentId)
+{
+    QSqlQuery query(db);
+    QString q_str;
+    q_str = QString("INSERT INTO device_borrow_log(device_id,student_id) VALUES ('%1', '%2')")
+            .arg(deviceId).arg(studentId).toUtf8();
+    query.exec(q_str);
+    if(!query.isActive()){
+        qDebug()<<query.lastError();
+        qDebug()<<q_str;
+        return false;
+    }
+    return true;
+}

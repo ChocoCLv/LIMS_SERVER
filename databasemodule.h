@@ -33,6 +33,8 @@ public:
 
     bool updateDeviceStatus(QString deviceId, QString deviceLoc, QString deviceStatus, QString deviceComments);
 
+    bool borrowDevice(QString deviceId,QString studentId);
+
 private:
     LogModule *logModule = LogModule::getInstance();
     QSqlDatabase db;

@@ -29,6 +29,8 @@ void RequestParseModule::parseRequest(ClientRequest *cr)
         processAddDeviceRequest(cr);
     }else if(rt == "UPDATE_DEVICE_STATUS"){
         processUpdateDevcieStatusRequest(cr);
+    }else if(rt == "BORROW_DEVICE"){
+        processBorrowDeviceRequest(cr);
     }
 }
 
@@ -94,6 +96,23 @@ void RequestParseModule::processUpdateDevcieStatusRequest(ClientRequest *cr)
         resp.insert("UPDATE_STATUS","SUCCESS");
     }else{
         resp.insert("UPDATE_STATUS","FAILED");
+    }
+    cr->sendResponse(resp);
+}
+
+void RequestParseModule::processBorrowDeviceRequest(ClientRequest *cr)
+{
+    QJsonObject req = cr->getReqContent();
+    QString deviceId = req.find("DEVICE_ID").value().toString();
+    QString studentId = req.find("STUDENT_ID").value().toString();
+
+    bool borrowStatus = databaseModule->
+            borrowDevice(deviceId,studentId);
+    QJsonObject resp;
+    if(borrowStatus){
+        resp.insert("BORROW_STATUS","SUCCESS");
+    }else{
+        resp.insert("BORROW_STATUS","FAILED");
     }
     cr->sendResponse(resp);
 }
