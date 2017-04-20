@@ -60,12 +60,12 @@ QString DataBaseModule::queryUserNamaByUserId(QString user_id)
     return query.value(0).toString();
 }
 
-bool DataBaseModule::addDevice(QString deviceId, QString name, QString type, QString principal)
+bool DataBaseModule::addDevice(QString deviceId, QString name, QString type, QString principal, QString locDefault)
 {
     QSqlQuery query(db);
     QString q_str;
-    q_str = QString("INSERT INTO device_information(device_id,device_name,device_principal_id,device_type) VALUES ('%1', '%2', '%3','%4')")
-            .arg(deviceId).arg(name).arg(principal).arg(type).toUtf8();
+    q_str = QString("INSERT INTO device_information(device_id,device_name,device_principal_id,device_type,device_belong_to) VALUES ('%1', '%2', '%3','%4','%5')")
+            .arg(deviceId).arg(name).arg(principal).arg(type).arg(locDefault).toUtf8();
 
     query.exec(q_str);
     if(!query.isActive()){

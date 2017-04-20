@@ -48,7 +48,7 @@ void RequestParseModule::processLoginRequest(ClientRequest *cr)
         QJsonObject jo;
         jo.insert("LOGIN_STATUS",QString("SUCCESS"));
         jo.insert("USER_NAME",username);
-        jo.insert("USERTYPE",user_type);
+        jo.insert("USER_TYPE",user_type);
         cr->sendResponse(jo);
     }else{
         QJsonObject jo;
@@ -62,6 +62,7 @@ void RequestParseModule::processAddDeviceRequest(ClientRequest *cr)
     QString devicePrincipalId = cr->getReqContent().find("DEVICE_PRINCIPAL_ID").value().toString();
     QString deviceName = cr->getReqContent().find("DEVICE_NAME").value().toString();
     QString deviceType = cr->getReqContent().find("DEVICE_TYPE").value().toString();
+    QString deviceLocDefault = cr->getReqContent().find("DEVICE_LOC_DEFAULT").value().toString();
     QJsonObject::iterator deviceIdIterator = cr->getReqContent().find("DEVICE_ID");
     QString deviceId;
     QJsonObject resp;
@@ -72,7 +73,7 @@ void RequestParseModule::processAddDeviceRequest(ClientRequest *cr)
         deviceId = deviceIdIterator.value().toString();
     }
 
-    bool addStatus = databaseModule->addDevice(deviceId,deviceName,deviceType,devicePrincipalId);
+    bool addStatus = databaseModule->addDevice(deviceId,deviceName,deviceType,devicePrincipalId,deviceLocDefault);
 
     if(addStatus){
         resp.insert("ADD_STATUS","SUCCESS");

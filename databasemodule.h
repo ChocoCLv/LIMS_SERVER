@@ -27,7 +27,7 @@ public:
 
     QString queryUserNamaByUserId(QString user_id);
 
-    bool addDevice(QString deviceId,QString name,QString type,QString principal);
+    bool addDevice(QString deviceId,QString name,QString type,QString principal,QString locDefault);
 
     quint64 getMaxDeviceId();
 
