@@ -35,6 +35,11 @@ public:
 
     bool borrowDevice(QString deviceId,QString studentId);
 
+    bool publishExperiment(QString teacherId,QString name,QString loc,QString date,QString stime,QString etime);
+
+    //获得实验室某一天的使用时间段
+    QList<QPair<QString,QString> > getLabUseTime(QString lab,QString date);
+
 private:
     LogModule *logModule = LogModule::getInstance();
     QSqlDatabase db;

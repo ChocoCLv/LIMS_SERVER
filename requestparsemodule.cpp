@@ -31,6 +31,8 @@ void RequestParseModule::parseRequest(ClientRequest *cr)
         processUpdateDevcieStatusRequest(cr);
     }else if(rt == "BORROW_DEVICE"){
         processBorrowDeviceRequest(cr);
+    }else if(rt == "PUBLISH_EXPERIMENT"){
+        processPublishExperimentRequest(cr);
     }
 }
 
@@ -117,3 +119,38 @@ void RequestParseModule::processBorrowDeviceRequest(ClientRequest *cr)
     }
     cr->sendResponse(resp);
 }
+
+void RequestParseModule::processPublishExperimentRequest(ClientRequest *cr)
+{
+    QJsonObject req = cr->getReqContent();
+    QString expName = req.find("EXPERIMENT_NAME").value().toString();
+    QString expLoc = req.find("EXPERIMENT_LOC").value().toString();
+    QString expTeacherId = req.find("TEACHER_ID").value().toString();
+    QString expDate = req.find("EXPERIMENT_DATE").value().toString();
+    QString expStartTime = req.find("EXPERIMENT_START_TIME").value().toString();
+    QString expEndTime = req.find("EXPERIMENT_END_TIME").value().toString();
+
+    QJsonObject resp;
+    Util util;
+    if(!util.isTimeConflict(expStartTime,expEndTime,databaseModule->getLabUseTime(expLoc,expDate))){
+        bool publishResult = databaseModule->publishExperiment(expTeacherId,expName,expLoc,expDate,expStartTime,expEndTime);
+        if(publishResult){
+            resp.insert("PUBLISH_RESULT","SUCCESS");
+        }else{
+            resp.insert("PUBLISH_RESULT","FAILED");
+        }
+    }else{
+        resp.insert("PUBLISH_RESULT","FAILED");
+        resp.insert("PUBLISH_DESCRIPTION","时间段冲突");
+    }
+
+
+
+
+
+    cr->sendResponse(resp);
+
+}
+
+
+

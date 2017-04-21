@@ -10,6 +10,7 @@
 #include "logmodule.h"
 #include "clientrequest.h"
 #include "requestbuffpool.h"
+#include "util.h"
 
 /***
  * 解析客户端的请求
@@ -34,7 +35,9 @@ private:
     void processLoginRequest(ClientRequest *cr);
     void processAddDeviceRequest(ClientRequest *cr);
     void processBorrowDeviceRequest(ClientRequest *cr);
+    void processPublishExperimentRequest(ClientRequest *cr);
     void processUpdateDevcieStatusRequest(ClientRequest *cr);
+
 
 
 protected:
