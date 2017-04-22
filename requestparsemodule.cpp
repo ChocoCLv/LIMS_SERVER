@@ -33,6 +33,8 @@ void RequestParseModule::parseRequest(ClientRequest *cr)
         processBorrowDeviceRequest(cr);
     }else if(rt == "PUBLISH_EXPERIMENT"){
         processPublishExperimentRequest(cr);
+    }else if(rt == "GET_COURSE_LIST"){
+        processGetCourseListRequest(cr);
     }
 }
 
@@ -65,15 +67,8 @@ void RequestParseModule::processAddDeviceRequest(ClientRequest *cr)
     QString deviceName = cr->getReqContent().find("DEVICE_NAME").value().toString();
     QString deviceType = cr->getReqContent().find("DEVICE_TYPE").value().toString();
     QString deviceLocDefault = cr->getReqContent().find("DEVICE_LOC_DEFAULT").value().toString();
-    QJsonObject::iterator deviceIdIterator = cr->getReqContent().find("DEVICE_ID");
-    QString deviceId;
+    QString deviceId = cr->getReqContent().find("DEVICE_ID").value().toString();
     QJsonObject resp;
-    if(deviceIdIterator==cr->getReqContent().end()){
-        deviceId = QString::number(databaseModule->getMaxDeviceId()+1);
-        resp.insert("DEVICE_ID",deviceId);
-    }else{
-        deviceId = deviceIdIterator.value().toString();
-    }
 
     bool addStatus = databaseModule->addDevice(deviceId,deviceName,deviceType,devicePrincipalId,deviceLocDefault);
 
@@ -123,7 +118,8 @@ void RequestParseModule::processBorrowDeviceRequest(ClientRequest *cr)
 void RequestParseModule::processPublishExperimentRequest(ClientRequest *cr)
 {
     QJsonObject req = cr->getReqContent();
-    QString expName = req.find("EXPERIMENT_NAME").value().toString();
+    QString courseName = req.find("COURSE_NAME").value().toString();
+    QString projectName = req.find("PROJECT_NAME").value().toString();
     QString expLoc = req.find("EXPERIMENT_LOC").value().toString();
     QString expTeacherId = req.find("TEACHER_ID").value().toString();
     QString expDate = req.find("EXPERIMENT_DATE").value().toString();
@@ -133,7 +129,7 @@ void RequestParseModule::processPublishExperimentRequest(ClientRequest *cr)
     QJsonObject resp;
     Util util;
     if(!util.isTimeConflict(expStartTime,expEndTime,databaseModule->getLabUseTime(expLoc,expDate))){
-        bool publishResult = databaseModule->publishExperiment(expTeacherId,expName,expLoc,expDate,expStartTime,expEndTime);
+        bool publishResult = databaseModule->publishExperiment(expTeacherId,courseName,projectName,expLoc,expDate,expStartTime,expEndTime);
         if(publishResult){
             resp.insert("PUBLISH_RESULT","SUCCESS");
         }else{
@@ -152,5 +148,22 @@ void RequestParseModule::processPublishExperimentRequest(ClientRequest *cr)
 
 }
 
+void RequestParseModule::processGetCourseListRequest(ClientRequest *cr)
+{
+    QString teacherId = cr->getReqContent().find("TEACHER_ID").value().toString();
+
+    QString coursesList = databaseModule->getCourseListByTeacherId(teacherId);
+
+
+    QJsonObject resp;
+    if(coursesList.isEmpty()||coursesList.isNull()){
+        resp.insert("GET_RESULT","FAILED");
+    }else{
+        resp.insert("GET_RESULT","SUCCESS");
+        resp.insert("COURSE_LIST",coursesList);
+    }
+
+    cr->sendResponse(resp);
+}
 
 

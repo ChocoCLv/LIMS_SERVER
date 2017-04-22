@@ -15,7 +15,7 @@ bool Util::isTimeConflict(QString stime, QString etime, QList<QPair<QString, QSt
         QTime e =QTime::fromString(p.second);
         if((st<e&&st>s)||(et<e&&et>s)){
             return true;
-        }else if(st<s&&et>e){
+        }else if(st<=s&&et>=e){
             return true;
         }
     }

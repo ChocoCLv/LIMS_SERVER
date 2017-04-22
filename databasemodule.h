@@ -29,16 +29,17 @@ public:
 
     bool addDevice(QString deviceId,QString name,QString type,QString principal,QString locDefault);
 
-    quint64 getMaxDeviceId();
-
     bool updateDeviceStatus(QString deviceId, QString deviceLoc, QString deviceStatus, QString deviceComments);
 
     bool borrowDevice(QString deviceId,QString studentId);
 
-    bool publishExperiment(QString teacherId,QString name,QString loc,QString date,QString stime,QString etime);
+    bool publishExperiment(QString teacherId,QString courseName,QString projectname,QString loc,QString date,QString stime,QString etime);
 
     //获得实验室某一天的使用时间段
     QList<QPair<QString,QString> > getLabUseTime(QString lab,QString date);
+
+    //根据教师ID获取该教师的所有课程
+    QString getCourseListByTeacherId(QString teacherId);
 
 private:
     LogModule *logModule = LogModule::getInstance();

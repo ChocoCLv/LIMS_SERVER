@@ -35,10 +35,9 @@ private:
     void processLoginRequest(ClientRequest *cr);
     void processAddDeviceRequest(ClientRequest *cr);
     void processBorrowDeviceRequest(ClientRequest *cr);
+    void processGetCourseListRequest(ClientRequest *cr);
     void processPublishExperimentRequest(ClientRequest *cr);
     void processUpdateDevcieStatusRequest(ClientRequest *cr);
-
-
 
 protected:
     void run();

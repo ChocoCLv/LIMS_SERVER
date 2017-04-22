@@ -76,17 +76,6 @@ bool DataBaseModule::addDevice(QString deviceId, QString name, QString type, QSt
     return true;
 }
 
-quint64 DataBaseModule::getMaxDeviceId()
-{
-    QSqlQuery query(db);
-    QString q_str;
-    q_str = QString("SELECT max(device_id) FROM device_information");
-    query.exec(q_str);
-    query.next();
-    quint64 maxId = query.value(0).toULongLong();
-    return maxId;
-}
-
 bool DataBaseModule::updateDeviceStatus(
         QString deviceId, QString deviceLoc, QString deviceStatus, QString deviceComments)
 {
@@ -118,12 +107,12 @@ bool DataBaseModule::borrowDevice(QString deviceId, QString studentId)
     return true;
 }
 
-bool DataBaseModule::publishExperiment(QString teacherId, QString name, QString loc, QString date, QString stime, QString etime)
+bool DataBaseModule::publishExperiment(QString teacherId, QString courseName,QString projectName, QString loc, QString date, QString stime, QString etime)
 {
     QSqlQuery query(db);
     QString q_str;
-    q_str = QString("INSERT INTO experiment_publish_records(project_name,teacher_id,loc,experiment_date,start_time,end_time) VALUES ('%1', '%2','%3','%4','%5','%6')")
-            .arg(name).arg(teacherId).arg(loc).arg(date).arg(stime).arg(etime).toUtf8();
+    q_str = QString("INSERT INTO experiment_publish_records(course_name,project_name,teacher_id,loc,experiment_date,start_time,end_time) VALUES ('%1', '%2','%3','%4','%5','%6','%7')")
+            .arg(courseName).arg(projectName).arg(teacherId).arg(loc).arg(date).arg(stime).arg(etime).toUtf8();
 
     query.exec(q_str);
     if(!query.isActive()){
@@ -156,4 +145,29 @@ QList<QPair<QString,QString> > DataBaseModule::getLabUseTime(QString lab,QString
     }
 
     return useTime;
+}
+
+QString DataBaseModule::getCourseListByTeacherId(QString teacherId)
+{
+    QString courseListString;
+    QSqlQuery query(db);
+    QString q_str;
+    q_str = QString("SELECT course_name FROM class_participants WHERE teacher_id ='%1'")
+            .arg(teacherId).toUtf8();
+
+    query.exec(q_str);
+
+    if(!query.isActive()){
+        qDebug()<<query.lastError();
+
+        return courseListString;
+    }
+    query.next();
+    courseListString.append(query.value(0).toString());
+    while(query.next()){
+        QString cn = query.value(0).toString();
+        courseListString.append(","+cn);
+    }
+
+    return courseListString;
 }
