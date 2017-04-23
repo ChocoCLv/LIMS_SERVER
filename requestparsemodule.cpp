@@ -31,7 +31,7 @@ void RequestParseModule::parseRequest(ClientRequest *cr)
         processUpdateDevcieStatusRequest(cr);
     }else if(rt == "BORROW_DEVICE"){
         processBorrowDeviceRequest(cr);
-    }else if(rt == "PUBLISH_EXPERIMENT"){
+    }else if(rt == "PUBLISH_PROJECT"){
         processPublishExperimentRequest(cr);
     }else if(rt == "GET_COURSE_LIST"){
         processGetCourseListRequest(cr);
@@ -122,11 +122,11 @@ void RequestParseModule::processPublishExperimentRequest(ClientRequest *cr)
     QJsonObject req = cr->getReqContent();
     QString courseName = req.find("COURSE_NAME").value().toString();
     QString projectName = req.find("PROJECT_NAME").value().toString();
-    QString projectLoc = req.find("PROJEC_LOC").value().toString();
+    QString projectLoc = req.find("PROJECT_LOC").value().toString();
     QString projectTeacherId = req.find("TEACHER_ID").value().toString();
-    QString projectDate = req.find("PROJEC_DATE").value().toString();
-    QString projectStartTime = req.find("PROJEC_START_TIME").value().toString();
-    QString projectEndTime = req.find("PROJEC_END_TIME").value().toString();
+    QString projectDate = req.find("PROJECT_DATE").value().toString();
+    QString projectStartTime = req.find("PROJECT_START_TIME").value().toString();
+    QString projectEndTime = req.find("PROJECT_END_TIME").value().toString();
 
     QJsonObject resp;
     Util util;

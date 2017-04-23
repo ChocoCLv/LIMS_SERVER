@@ -2,14 +2,12 @@
 
 DataBaseModule::~DataBaseModule()
 {
-
 }
 
 DataBaseModule::DataBaseModule(QObject *parent) : QObject(parent)
 {
     initDb();
 }
-
 
 void DataBaseModule::initDb()
 {
@@ -64,7 +62,7 @@ bool DataBaseModule::addDevice(QString deviceId, QString name, QString type, QSt
 {
     QSqlQuery query(db);
     QString q_str;
-    q_str = QString("INSERT INTO device_information(device_id,device_name,device_principal_id,device_type,device_belong_to) VALUES ('%1', '%2', '%3','%4','%5')")
+    q_str = QString("INSERT INTO device_information(device_id,device_name,device_principal_id,device_type,device_loc_default) VALUES ('%1', '%2', '%3','%4','%5')")
             .arg(deviceId).arg(name).arg(principal).arg(type).arg(locDefault).toUtf8();
 
     query.exec(q_str);
