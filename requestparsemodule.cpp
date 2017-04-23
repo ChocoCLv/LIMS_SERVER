@@ -35,6 +35,8 @@ void RequestParseModule::parseRequest(ClientRequest *cr)
         processPublishExperimentRequest(cr);
     }else if(rt == "GET_COURSE_LIST"){
         processGetCourseListRequest(cr);
+    }else if(rt == "GET_PROJECT_INFO"){
+        processGetProjectInfoRequest(cr);
     }
 }
 
@@ -120,16 +122,16 @@ void RequestParseModule::processPublishExperimentRequest(ClientRequest *cr)
     QJsonObject req = cr->getReqContent();
     QString courseName = req.find("COURSE_NAME").value().toString();
     QString projectName = req.find("PROJECT_NAME").value().toString();
-    QString expLoc = req.find("EXPERIMENT_LOC").value().toString();
-    QString expTeacherId = req.find("TEACHER_ID").value().toString();
-    QString expDate = req.find("EXPERIMENT_DATE").value().toString();
-    QString expStartTime = req.find("EXPERIMENT_START_TIME").value().toString();
-    QString expEndTime = req.find("EXPERIMENT_END_TIME").value().toString();
+    QString projectLoc = req.find("PROJEC_LOC").value().toString();
+    QString projectTeacherId = req.find("TEACHER_ID").value().toString();
+    QString projectDate = req.find("PROJEC_DATE").value().toString();
+    QString projectStartTime = req.find("PROJEC_START_TIME").value().toString();
+    QString projectEndTime = req.find("PROJEC_END_TIME").value().toString();
 
     QJsonObject resp;
     Util util;
-    if(!util.isTimeConflict(expStartTime,expEndTime,databaseModule->getLabUseTime(expLoc,expDate))){
-        bool publishResult = databaseModule->publishExperiment(expTeacherId,courseName,projectName,expLoc,expDate,expStartTime,expEndTime);
+    if(!util.isTimeConflict(projectStartTime,projectEndTime,databaseModule->getLabUseTime(projectLoc,projectDate))){
+        bool publishResult = databaseModule->publishExperiment(projectTeacherId,courseName,projectName,projectLoc,projectDate,projectStartTime,projectEndTime);
         if(publishResult){
             resp.insert("PUBLISH_RESULT","SUCCESS");
         }else{
@@ -140,21 +142,13 @@ void RequestParseModule::processPublishExperimentRequest(ClientRequest *cr)
         resp.insert("PUBLISH_DESCRIPTION","时间段冲突");
     }
 
-
-
-
-
     cr->sendResponse(resp);
-
 }
 
 void RequestParseModule::processGetCourseListRequest(ClientRequest *cr)
 {
     QString teacherId = cr->getReqContent().find("TEACHER_ID").value().toString();
-
     QString coursesList = databaseModule->getCourseListByTeacherId(teacherId);
-
-
     QJsonObject resp;
     if(coursesList.isEmpty()||coursesList.isNull()){
         resp.insert("GET_RESULT","FAILED");
@@ -162,8 +156,19 @@ void RequestParseModule::processGetCourseListRequest(ClientRequest *cr)
         resp.insert("GET_RESULT","SUCCESS");
         resp.insert("COURSE_LIST",coursesList);
     }
-
     cr->sendResponse(resp);
 }
 
-
+void RequestParseModule::processGetProjectInfoRequest(ClientRequest *cr)
+{
+    QString studentId = cr->getReqContent().find("STUDENT_ID").value().toString();
+    QString projectsInfo = databaseModule->getProjectInfoByStudentId(studentId);
+    QJsonObject resp;
+    if(projectsInfo.isEmpty()||projectsInfo.isNull()){
+        resp.insert("GET_RESULT","FAILED");
+    }else{
+        resp.insert("GET_RESULT","SUCCESS");
+        resp.insert("PROJECTS_INFO",projectsInfo);
+    }
+    cr->sendResponse(resp);
+}

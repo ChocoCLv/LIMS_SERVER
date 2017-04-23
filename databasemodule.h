@@ -6,6 +6,9 @@
 #include <QSqlError>
 #include <QSqlQuery>
 #include <QDebug>
+#include <QJsonArray>
+#include <QJsonObject>
+#include <QJsonValue>
 
 #include "logmodule.h"
 #include "global.h"
@@ -40,6 +43,9 @@ public:
 
     //根据教师ID获取该教师的所有课程
     QString getCourseListByTeacherId(QString teacherId);
+
+    //根据学生ID获取该学生的所有项目信息
+    QString getProjectInfoByStudentId(QString studentId);
 
 private:
     LogModule *logModule = LogModule::getInstance();

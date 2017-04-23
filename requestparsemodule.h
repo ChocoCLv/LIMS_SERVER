@@ -36,6 +36,7 @@ private:
     void processAddDeviceRequest(ClientRequest *cr);
     void processBorrowDeviceRequest(ClientRequest *cr);
     void processGetCourseListRequest(ClientRequest *cr);
+    void processGetProjectInfoRequest(ClientRequest *cr);
     void processPublishExperimentRequest(ClientRequest *cr);
     void processUpdateDevcieStatusRequest(ClientRequest *cr);
 

@@ -14,7 +14,7 @@ DataBaseModule::DataBaseModule(QObject *parent) : QObject(parent)
 void DataBaseModule::initDb()
 {
     if(!connectToDb()){
-       return;
+        return;
     }
 }
 
@@ -111,7 +111,7 @@ bool DataBaseModule::publishExperiment(QString teacherId, QString courseName,QSt
 {
     QSqlQuery query(db);
     QString q_str;
-    q_str = QString("INSERT INTO experiment_publish_records(course_name,project_name,teacher_id,loc,experiment_date,start_time,end_time) VALUES ('%1', '%2','%3','%4','%5','%6','%7')")
+    q_str = QString("INSERT INTO project_publish_records(course_name,project_name,teacher_id,loc,project_date,start_time,end_time) VALUES ('%1', '%2','%3','%4','%5','%6','%7')")
             .arg(courseName).arg(projectName).arg(teacherId).arg(loc).arg(date).arg(stime).arg(etime).toUtf8();
 
     query.exec(q_str);
@@ -128,7 +128,7 @@ QList<QPair<QString,QString> > DataBaseModule::getLabUseTime(QString lab,QString
     QList<QPair<QString,QString> > useTime;
     QSqlQuery query(db);
     QString q_str;
-    q_str = QString("SELECT start_time,end_time FROM experiment_publish_records WHERE experiment_date ='%1' & loc ='%2'")
+    q_str = QString("SELECT start_time,end_time FROM project_publish_records WHERE project_date ='%1' and loc ='%2'")
             .arg(date).arg(lab).toUtf8();
 
     query.exec(q_str);
@@ -162,12 +162,56 @@ QString DataBaseModule::getCourseListByTeacherId(QString teacherId)
 
         return courseListString;
     }
-    query.next();
-    courseListString.append(query.value(0).toString());
+    if(query.next())
+        courseListString.append(query.value(0).toString());
     while(query.next()){
         QString cn = query.value(0).toString();
         courseListString.append(","+cn);
     }
 
     return courseListString;
+}
+
+QString DataBaseModule::getProjectInfoByStudentId(QString studentId)
+{
+    QString projectsInfo;
+    QList<QPair<QString,QString> > classes_info;//teacher_id + course_name
+
+    QString q_str;
+    QSqlQuery query(db);
+    q_str = QString("SELECT teacher_id,course_name FROM class_participants WHERE student_id ='%1'")
+            .arg(studentId).toUtf8();
+
+    query.exec(q_str);
+
+    if(!query.isActive()){
+        qDebug()<<query.lastError();
+        return projectsInfo;
+    }
+
+    while(query.next()){
+        QString tid = query.value(0).toString();
+        QString cname = query.value(1).toString();
+        classes_info.append(QPair<QString,QString>(tid,cname));
+    }
+    QPair<QString,QString> class_info;
+    foreach (class_info, classes_info) {
+        QString courseName = class_info.second;
+        QString teacherId = class_info.first;
+        q_str = QString("SELECT * FROM project_publish_records WHERE teacher_id = '%1' and course_name ='%2' ")
+                .arg(teacherId).arg(courseName).toUtf8();
+        query.exec(q_str);
+        while(query.next()){
+            QString projectName = query.value(2).toString();
+            QString projectDate =  query.value(4).toString();
+            QString projectStartTime = query.value(5).toString();
+            QString projectEndTime= query.value(6).toString();
+            QString projectLoc= query.value(7).toString();
+            projectsInfo.append(courseName+","+projectName+","+teacherId+","+projectDate+","+projectStartTime+","+projectEndTime+","+projectLoc+";");
+        }
+    }
+    if(projectsInfo.count(";")>1){
+        projectsInfo.remove(projectsInfo.size()-1,1);
+    }
+    return projectsInfo;
 }
