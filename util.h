@@ -3,15 +3,14 @@
 
 #include <QString>
 #include <QTime>
-#include <QList>
-#include <QPair>
-
+#include <QJsonArray>
+#include <QJsonObject>
 
 class Util
 {
 public:
     Util();
-    bool isTimeConflict(QString stime,QString etime,QList<QPair<QString,QString> >l);
+    bool isTimeConflict(QString stime,QString etime,QJsonArray userTime);
 };
 
 #endif // UTIL_H
