@@ -90,11 +90,33 @@ bool DataBaseModule::updateDeviceStatus(
     return true;
 }
 
+QString DataBaseModule::getDeviceStatus(QString deviceId)
+{
+    QSqlQuery query(db);
+    QString q_str;
+    QString action;
+
+    q_str = QString("SELECT action FROM device_borrow_log WHERE device_id = '%1'")
+            .arg(deviceId).toUtf8();
+    query.exec(q_str);
+    if(!query.isActive()){
+        qDebug()<<query.lastError();
+        qDebug()<<q_str;
+        return action;
+    }
+
+    while(query.next()){
+        action = query.value(0).toString();
+    }
+    return action;
+}
+
 bool DataBaseModule::borrowDevice(QString deviceId, QString studentId)
 {
     QSqlQuery query(db);
     QString q_str;
-    q_str = QString("INSERT INTO device_borrow_log(device_id,student_id) VALUES ('%1', '%2')")
+
+    q_str = QString("INSERT INTO device_borrow_log(device_id,student_id,action) VALUES ('%1', '%2','BORROW')")
             .arg(deviceId).arg(studentId).toUtf8();
     query.exec(q_str);
     if(!query.isActive()){
@@ -102,6 +124,7 @@ bool DataBaseModule::borrowDevice(QString deviceId, QString studentId)
         qDebug()<<q_str;
         return false;
     }
+
     return true;
 }
 
@@ -121,9 +144,9 @@ bool DataBaseModule::publishExperiment(QString teacherId, QString courseName,QSt
     return true;
 }
 
-QList<QPair<QString,QString> > DataBaseModule::getLabUseTime(QString lab,QString date)
+QJsonArray DataBaseModule::getLabUseTime(QString lab,QString date)
 {
-    QList<QPair<QString,QString> > useTime;
+   QJsonArray useTime;
     QSqlQuery query(db);
     QString q_str;
     q_str = QString("SELECT start_time,end_time FROM project_publish_records WHERE project_date ='%1' and loc ='%2'")
@@ -136,18 +159,21 @@ QList<QPair<QString,QString> > DataBaseModule::getLabUseTime(QString lab,QString
 
         return useTime;
     }
+
     while(query.next()){
+        QJsonObject seTime;
         QString stime = query.value(0).toString();
         QString etime = query.value(1).toString();
-        useTime.append(QPair<QString,QString>(stime,etime));
+        seTime.insert("START_TIME",stime);
+        seTime.insert("END_TIME",etime);
+        useTime.append(seTime);
     }
-
     return useTime;
 }
 
-QString DataBaseModule::getCourseListByTeacherId(QString teacherId)
+QJsonArray DataBaseModule::getCourseListByTeacherId(QString teacherId)
 {
-    QString courseListString;
+    QJsonArray courseArray;
     QSqlQuery query(db);
     QString q_str;
     q_str = QString("SELECT course_name FROM class_participants WHERE teacher_id ='%1'")
@@ -158,16 +184,14 @@ QString DataBaseModule::getCourseListByTeacherId(QString teacherId)
     if(!query.isActive()){
         qDebug()<<query.lastError();
 
-        return courseListString;
-    }
-    if(query.next())
-        courseListString.append(query.value(0).toString());
-    while(query.next()){
-        QString cn = query.value(0).toString();
-        courseListString.append(","+cn);
+        return courseArray;
     }
 
-    return courseListString;
+    while(query.next()){
+        QString cn = query.value(0).toString();
+        courseArray.append(cn);
+    }
+    return courseArray;
 }
 
 QString DataBaseModule::getProjectInfoByStudentId(QString studentId)

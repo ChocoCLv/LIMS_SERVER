@@ -106,9 +106,19 @@ void RequestParseModule::processBorrowDeviceRequest(ClientRequest *cr)
     QString deviceId = req.find("DEVICE_ID").value().toString();
     QString studentId = req.find("STUDENT_ID").value().toString();
 
+    QString newestAction = databaseModule->getDeviceStatus(deviceId);
+    QJsonObject resp;
+
+    if(newestAction == "BORROW"){
+        resp.insert("BORROW_STATUS","FAILED");
+        resp.insert("DESCRIPTION","当前设备处于借出状态，请提醒管理员收回！");
+        cr->sendResponse(resp);
+        return;
+    }
+
     bool borrowStatus = databaseModule->
             borrowDevice(deviceId,studentId);
-    QJsonObject resp;
+
     if(borrowStatus){
         resp.insert("BORROW_STATUS","SUCCESS");
     }else{
@@ -148,13 +158,13 @@ void RequestParseModule::processPublishExperimentRequest(ClientRequest *cr)
 void RequestParseModule::processGetCourseListRequest(ClientRequest *cr)
 {
     QString teacherId = cr->getReqContent().find("TEACHER_ID").value().toString();
-    QString coursesList = databaseModule->getCourseListByTeacherId(teacherId);
+    QJsonArray courseArray = databaseModule->getCourseListByTeacherId(teacherId);
     QJsonObject resp;
-    if(coursesList.isEmpty()||coursesList.isNull()){
+    if(courseArray.isEmpty()){
         resp.insert("GET_RESULT","FAILED");
     }else{
         resp.insert("GET_RESULT","SUCCESS");
-        resp.insert("COURSE_LIST",coursesList);
+        resp.insert("COURSE_ARRAY",courseArray);
     }
     cr->sendResponse(resp);
 }

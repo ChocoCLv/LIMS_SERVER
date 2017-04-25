@@ -6,9 +6,9 @@
 #include <QSqlError>
 #include <QSqlQuery>
 #include <QDebug>
+
 #include <QJsonArray>
 #include <QJsonObject>
-#include <QJsonValue>
 
 #include "logmodule.h"
 #include "global.h"
@@ -39,13 +39,16 @@ public:
     bool publishExperiment(QString teacherId,QString courseName,QString projectname,QString loc,QString date,QString stime,QString etime);
 
     //获得实验室某一天的使用时间段
-    QList<QPair<QString,QString> > getLabUseTime(QString lab,QString date);
+    QJsonArray getLabUseTime(QString lab,QString date);
 
     //根据教师ID获取该教师的所有课程
-    QString getCourseListByTeacherId(QString teacherId);
+    QJsonArray getCourseListByTeacherId(QString teacherId);
 
     //根据学生ID获取该学生的所有项目信息
     QString getProjectInfoByStudentId(QString studentId);
+
+    //获取设备的状态  即是否是借出状态
+    QString getDeviceStatus(QString deviceId);
 
 private:
     LogModule *logModule = LogModule::getInstance();
