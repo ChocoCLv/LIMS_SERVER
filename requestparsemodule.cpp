@@ -172,9 +172,9 @@ void RequestParseModule::processGetCourseListRequest(ClientRequest *cr)
 void RequestParseModule::processGetProjectInfoRequest(ClientRequest *cr)
 {
     QString studentId = cr->getReqContent().find("STUDENT_ID").value().toString();
-    QString projectsInfo = databaseModule->getProjectInfoByStudentId(studentId);
+    QJsonArray projectsInfo = databaseModule->getProjectInfoByStudentId(studentId);
     QJsonObject resp;
-    if(projectsInfo.isEmpty()||projectsInfo.isNull()){
+    if(projectsInfo.isEmpty()){
         resp.insert("GET_RESULT","FAILED");
     }else{
         resp.insert("GET_RESULT","SUCCESS");

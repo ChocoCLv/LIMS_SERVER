@@ -45,7 +45,7 @@ public:
     QJsonArray getCourseListByTeacherId(QString teacherId);
 
     //根据学生ID获取该学生的所有项目信息
-    QString getProjectInfoByStudentId(QString studentId);
+    QJsonArray getProjectInfoByStudentId(QString studentId);
 
     //获取设备的状态  即是否是借出状态
     QString getDeviceStatus(QString deviceId);

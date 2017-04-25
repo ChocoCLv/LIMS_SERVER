@@ -194,9 +194,9 @@ QJsonArray DataBaseModule::getCourseListByTeacherId(QString teacherId)
     return courseArray;
 }
 
-QString DataBaseModule::getProjectInfoByStudentId(QString studentId)
+QJsonArray DataBaseModule::getProjectInfoByStudentId(QString studentId)
 {
-    QString projectsInfo;
+    QJsonArray projectsInfo;
     QList<QPair<QString,QString> > classes_info;//teacher_id + course_name
 
     QString q_str;
@@ -224,16 +224,22 @@ QString DataBaseModule::getProjectInfoByStudentId(QString studentId)
                 .arg(teacherId).arg(courseName).toUtf8();
         query.exec(q_str);
         while(query.next()){
+            QJsonObject projectInfo;
             QString projectName = query.value(2).toString();
             QString projectDate =  query.value(4).toString();
             QString projectStartTime = query.value(5).toString();
             QString projectEndTime= query.value(6).toString();
             QString projectLoc= query.value(7).toString();
-            projectsInfo.append(courseName+","+projectName+","+teacherId+","+projectDate+","+projectStartTime+","+projectEndTime+","+projectLoc+";");
+            projectInfo.insert("PROJECT_NAME",projectName);
+            projectInfo.insert("PROJECT_DATE",projectDate);
+            projectInfo.insert("PROJECT_START_TIME",projectStartTime);
+            projectInfo.insert("PROJECT_END_TIME",projectEndTime);
+            projectInfo.insert("PROJECT_LOC",projectLoc);
+            projectInfo.insert("COURSE_NAME",courseName);
+            projectInfo.insert("TEACHER_ID",teacherId);
+            projectsInfo.append(projectInfo);
         }
     }
-    if(projectsInfo.count(";")>1){
-        projectsInfo.remove(projectsInfo.size()-1,1);
-    }
+
     return projectsInfo;
 }
