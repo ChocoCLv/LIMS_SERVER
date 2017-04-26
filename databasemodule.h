@@ -50,6 +50,8 @@ public:
     //获取设备的状态  即是否是借出状态
     QString getDeviceStatus(QString deviceId);
 
+    bool signIn(QString studentId,QString teacherId,QString courseName,QString projectName);
+
 private:
     LogModule *logModule = LogModule::getInstance();
     QSqlDatabase db;

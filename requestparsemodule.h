@@ -33,12 +33,14 @@ private:
     void parseRequest(ClientRequest *cr);
 
     void processLoginRequest(ClientRequest *cr);
+    void processSignInRequest(ClientRequest *cr);
     void processAddDeviceRequest(ClientRequest *cr);
     void processBorrowDeviceRequest(ClientRequest *cr);
     void processGetCourseListRequest(ClientRequest *cr);
     void processGetProjectInfoRequest(ClientRequest *cr);
     void processPublishExperimentRequest(ClientRequest *cr);
     void processUpdateDevcieStatusRequest(ClientRequest *cr);
+
 
 protected:
     void run();

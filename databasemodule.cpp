@@ -243,3 +243,19 @@ QJsonArray DataBaseModule::getProjectInfoByStudentId(QString studentId)
 
     return projectsInfo;
 }
+
+bool DataBaseModule::signIn(QString studentId, QString teacherId, QString courseName, QString projectName)
+{
+    QSqlQuery query(db);
+    QString q_str;
+    q_str = QString("INSERT INTO student_sign_in_records(student_id,teacher_id,course_name,project_name) VALUES ('%1', '%2','%3','%4')")
+            .arg(studentId).arg(teacherId).arg(courseName).arg(projectName).toUtf8();
+
+    query.exec(q_str);
+    if(!query.isActive()){
+        qDebug()<<query.lastError();
+        qDebug()<<q_str;
+        return false;
+    }
+    return true;
+}

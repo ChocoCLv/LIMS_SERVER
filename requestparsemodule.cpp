@@ -37,6 +37,8 @@ void RequestParseModule::parseRequest(ClientRequest *cr)
         processGetCourseListRequest(cr);
     }else if(rt == "GET_PROJECT_INFO"){
         processGetProjectInfoRequest(cr);
+    }else if(rt == "SIGN_IN"){
+        processSignInRequest(cr);
     }
 }
 
@@ -179,6 +181,22 @@ void RequestParseModule::processGetProjectInfoRequest(ClientRequest *cr)
     }else{
         resp.insert("GET_RESULT","SUCCESS");
         resp.insert("PROJECTS_INFO",projectsInfo);
+    }
+    cr->sendResponse(resp);
+}
+
+void RequestParseModule::processSignInRequest(ClientRequest *cr)
+{
+    QString teacherId = cr->getReqContent().find("TEACHER_ID").value().toString();
+    QString studentId = cr->getReqContent().find("STUDENT_ID").value().toString();
+    QString courseName = cr->getReqContent().find("COURSE_NAME").value().toString();
+    QString projectName = cr->getReqContent().find("PROJECT_NAME").value().toString();
+    bool signInResult = databaseModule->signIn(studentId,teacherId,courseName,projectName);
+    QJsonObject resp;
+    if(signInResult){
+        resp.insert("SIGNIN_RESULT","SUCCESS");
+    }else{
+        resp.insert("SIGNIN_RESULT","FAILED");
     }
     cr->sendResponse(resp);
 }
