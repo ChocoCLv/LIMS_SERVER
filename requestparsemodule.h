@@ -41,6 +41,7 @@ private:
     void processPublishExperimentRequest(ClientRequest *cr);
     void processUpdateDevcieStatusRequest(ClientRequest *cr);
 
+    void distributeFileToDevice(QString deviceIp);
 
 protected:
     void run();

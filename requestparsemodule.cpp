@@ -127,6 +127,17 @@ void RequestParseModule::processBorrowDeviceRequest(ClientRequest *cr)
         resp.insert("BORROW_STATUS","FAILED");
     }
     cr->sendResponse(resp);
+
+    QString deviceType = req.find("DEVICE_TYPE").value().toString();
+    if(deviceType == "电脑"){
+        QString deviceIp = req.find("DEVICE_IP").value().toString();
+        distributeFileToDevice(deviceIp);
+    }
+}
+
+void RequestParseModule::distributeFileToDevice(QString deviceIp)
+{
+
 }
 
 void RequestParseModule::processPublishExperimentRequest(ClientRequest *cr)
