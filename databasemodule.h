@@ -6,6 +6,7 @@
 #include <QSqlError>
 #include <QSqlQuery>
 #include <QDebug>
+#include <QPair>
 
 #include <QJsonArray>
 #include <QJsonObject>
@@ -51,6 +52,8 @@ public:
     QString getDeviceStatus(QString deviceId);
 
     bool signIn(QString studentId,QString teacherId,QString courseName,QString projectName);
+
+    QPair<QString,QString> getLabNetInfoByProjectName(QString projectName);
 
 private:
     LogModule *logModule = LogModule::getInstance();

@@ -29,7 +29,6 @@ class RequestBuffPool : public QThread
     Q_OBJECT
 public:
     explicit RequestBuffPool(QObject *parent = 0);
-    bool hasClientRequest();
     ClientRequest * getClientRequest();
     ~RequestBuffPool();
 

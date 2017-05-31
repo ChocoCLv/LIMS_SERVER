@@ -23,6 +23,11 @@ bool ClientRequest::setRequest(QHostAddress cAddr,QByteArray req)
 
 }
 
+QHostAddress ClientRequest::getClientAddr()
+{
+    return clientAddr;
+}
+
 void ClientRequest::sendResponse(QJsonObject resp)
 {
     commModule->sendData(clientAddr,resp);

@@ -25,3 +25,17 @@ bool Util::isTimeConflict(QString stime, QString etime, QJsonArray useTime)
     }
     return false;
 }
+
+bool Util::isInTheSameSubnet(QPair<QString, QString> netInfo, QHostAddress ip)
+{
+    QHostAddress netAddress = QHostAddress(netInfo.first);
+    QHostAddress netmask = QHostAddress(netInfo.second);
+
+    quint32 clientNetId = ip.toIPv4Address() & netmask.toIPv4Address();
+    if(netAddress.toIPv4Address() == clientNetId){
+        return true;
+    }else{
+        return false;
+    }
+
+}

@@ -33,6 +33,7 @@ public:
     bool setRequest(QHostAddress cAddr,QByteArray req);
     QJsonObject getReqContent();
     void sendResponse(QJsonObject resp);
+    QHostAddress getClientAddr();
     ~ClientRequest();
 
 private:

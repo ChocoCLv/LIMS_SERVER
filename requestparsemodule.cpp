@@ -202,12 +202,21 @@ void RequestParseModule::processSignInRequest(ClientRequest *cr)
     QString studentId = cr->getReqContent().find("STUDENT_ID").value().toString();
     QString courseName = cr->getReqContent().find("COURSE_NAME").value().toString();
     QString projectName = cr->getReqContent().find("PROJECT_NAME").value().toString();
-    bool signInResult = databaseModule->signIn(studentId,teacherId,courseName,projectName);
+
+    QPair<QString,QString> netInfo = databaseModule->getLabNetInfoByProjectName(projectName);
+
+    Util util;
     QJsonObject resp;
-    if(signInResult){
-        resp.insert("SIGNIN_RESULT","SUCCESS");
+    if(util.isInTheSameSubnet(netInfo,cr->getClientAddr())){
+        bool signInResult = databaseModule->signIn(studentId,teacherId,courseName,projectName);
+        if(signInResult){
+            resp.insert("SIGNIN_RESULT","SUCCESS");
+        }else{
+            resp.insert("SIGNIN_RESULT","FAILED");
+        }
     }else{
         resp.insert("SIGNIN_RESULT","FAILED");
+        resp.insert("SIGNIN_DESCRIPTION","检查是否连接实验室WIFI");
     }
     cr->sendResponse(resp);
 }

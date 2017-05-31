@@ -248,6 +248,7 @@ bool DataBaseModule::signIn(QString studentId, QString teacherId, QString course
 {
     QSqlQuery query(db);
     QString q_str;
+
     q_str = QString("INSERT INTO student_sign_in_records(student_id,teacher_id,course_name,project_name) VALUES ('%1', '%2','%3','%4')")
             .arg(studentId).arg(teacherId).arg(courseName).arg(projectName).toUtf8();
 
@@ -258,4 +259,43 @@ bool DataBaseModule::signIn(QString studentId, QString teacherId, QString course
         return false;
     }
     return true;
+}
+
+QPair<QString, QString> DataBaseModule::getLabNetInfoByProjectName(QString projectName)
+{
+    QSqlQuery query(db);
+    QString q_str;
+    QString Loc;
+    QString netid = "0.0.0.0";
+    QString subnet_mask = "255.255.255.255";
+    QPair<QString,QString> pair;
+    pair.first = netid;
+    pair.second = subnet_mask;
+
+    q_str = QString("SELECT loc FROM project_publish_records WHERE project_name ='%1'")
+            .arg(projectName);
+
+    query.exec(q_str);
+    if(!query.isActive()){
+        qDebug()<<query.lastError();
+        qDebug()<<q_str;
+        return pair;
+    }
+    while(query.next()){
+        Loc = query.value(0).toString();
+    }
+
+    if(Loc.isEmpty()){
+        return pair;
+    }
+    q_str = QString("SELECT lab_netid,lab_subnetmask FROM lab_information WHERE lab_loc ='%1'")
+            .arg(Loc);
+    query.exec(q_str);
+    while(query.next()){
+        netid = query.value(0).toString();
+        subnet_mask = query.value(1).toString();
+    }
+    pair.first = netid;
+    pair.second = subnet_mask;
+    return pair;
 }
